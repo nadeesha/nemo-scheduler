@@ -2,22 +2,14 @@ import superagent from 'superagent';
 
 export default function () {
   return new Promise((resolve, reject) => {
-    const where = {
-      nextRunAfter: {
-        gte: Date.now(),
-      },
-    };
-
-    const filter = ({where}).toString();
-
     superagent
-      .get(`${NEMO_URI}/api/plugins?filter=${filter}`)
-      .end((err, result) => {
+      .get(`${process.env.NEMO_URI}/api/plugs/runnable`)
+      .end((err, response) => {
         if (err) {
           return reject(err);
         }
 
-        resolve(result);
+        return resolve(response.body.plugs);
       });
   });
 }
